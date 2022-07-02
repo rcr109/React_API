@@ -1,0 +1,25 @@
+.titulo{
+    background-color: blueviolet;
+    min-width: 150px;
+    border-radius: 8px;
+    padding: 0px 12px;
+}
+
+.conteudo{
+    background-color: cornflowerblue;
+    min-width: 600px;
+    border-radius: 8px;
+    padding: 0px 12px;
+}
+.conteudopequeno{
+    background-color: cornflowerblue;
+    min-width: 300px;
+    border-radius: 8px;
+    padding: 0px 12px;
+}
+
+.botao{
+    background-color: rgb(89, 117, 89);
+    border-radius: 8px;
+    min-width: 50px;
+}
