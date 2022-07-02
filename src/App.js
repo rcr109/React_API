@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import List from './List';
 import InputWithLabel from './InputWithLabel';
-import InputBox from './InputBox';
 
 const peopleReducer = (state, action) => {
   switch(action.type){
@@ -28,7 +27,7 @@ const peopleReducer = (state, action) => {
     case 'REMOVE_PERSON':
       return{
         ...state,
-        data: state.data.filter((person) => action.payload.codigo !== person.codigo)
+        data: state.data.filter((person) => action.payload.objectID !== person.objectID)
       } 
     case 'INSERT_PERSON':
       return{
@@ -51,13 +50,13 @@ function App() {
     localStorage.getItem('search') || ''
   )
 
-
-
   React.useEffect(() => {
-    try {
-      dispatchPeople({type:'PEOPLE_FETCH_INIT'})
 
-      fetch(`${API_ENDPOINT}react`)
+    try {
+
+      if(!searchTerm) return
+      dispatchPeople({type:'PEOPLE_FETCH_INIT'})
+      fetch(`${API_ENDPOINT}${searchTerm}`)
       .then((response) => response.json())
       .then((result) => {
 
@@ -71,11 +70,7 @@ function App() {
         dispatchPeople({type: 'PEOPLE_FETCH_FAILURE'})
     }
   // eslint-disable-next-line
-  }, [])
-
-
-
-
+  }, [searchTerm])
 
   React.useEffect(() => {
     localStorage.setItem('search', searchTerm);
@@ -90,18 +85,7 @@ function App() {
       type: 'REMOVE_PERSON',
       payload: item,
     })
-    
   }
-
-  const addItem = (item) => {
-    dispatchPeople({
-      type: 'INSERT_PERSON',
-      payload: item,
-    })
-
-  }
-
-const searchedPeople = people.data.filter((person) => person.title.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div className="App">
@@ -117,15 +101,12 @@ const searchedPeople = people.data.filter((person) => person.title.toLowerCase()
         <hr/>
 
         {people.isError && <p>Something wrog...</p>}
-        {people.isLoading? <h2>Loading...</h2> : <List lista={searchedPeople} onDelete={deleteItem}/>}
+        {people.isLoading? <h2>Loading...</h2> : <List lista={people.data} onDelete={deleteItem}/>}
         <br/>
         <hr/>
-        <InputBox onAdd={addItem}/>
 
     </div>
   );
-
-
 
 }
 
